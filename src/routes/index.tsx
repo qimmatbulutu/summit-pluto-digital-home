@@ -180,7 +180,7 @@ const SOCIALS = [
   { icon: Twitter, label: "إكس (تويتر)", href: "https://x.com/qimmatpluto" },
   { icon: TikTokIcon, label: "تيك توك", href: "https://tiktok.com/@qimmatpluto" },
   { icon: SnapchatIcon, label: "سناب شات", href: "https://snapchat.com/add/qimmatpluto" },
-  { icon: WhatsAppIcon, label: "واتساب", href: "https://wa.me/966500000000" },
+  { icon: WhatsAppIcon, label: "واتساب", href: "https://wa.me/966537992507" },
 ];
 
 /* ---------- Custom brand-channel icons (not available in lucide) ---------- */
@@ -486,7 +486,7 @@ function Contact() {
 
         <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {[
-            { icon: Phone, title: "اتصل بنا", line1: "920001234", line2: "للرجال والمصممين" },
+            { icon: Phone, title: "اتصل بنا", line1: "+966 53 799 2507", line2: "متاحون لخدمتكم" },
             { icon: Mail, title: "راسلنا", line1: "info@qimmatpluto.sa", line2: "نرد خلال يوم عمل" },
             { icon: MapPin, title: "المعرض الرئيسي", line1: "طريق الملك فهد", line2: "حي المروج، الرياض" },
             { icon: Clock, title: "ساعات العمل", line1: "السبت - الخميس", line2: "10 صباحاً - 11 مساءً" },
@@ -574,7 +574,7 @@ function Footer() {
 function WhatsAppFloat() {
   return (
     <a
-      href="https://wa.me/966500000000"
+      href="https://wa.me/966537992507"
       target="_blank"
       rel="noreferrer"
       aria-label="تواصل عبر واتساب"
