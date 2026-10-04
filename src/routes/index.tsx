@@ -250,12 +250,12 @@ function Hero() {
   return (
     <section id="home" className="relative flex min-h-screen items-center overflow-hidden">
       <img
-        src={bedroomImg}
-        alt="غرفة نوم ملكية من قمة بلوتو"
+        src={setCurved.url}
+        alt="مجلس عصري من قمة بلوتو"
         className="absolute inset-0 h-full w-full object-cover"
       />
-      <div className="absolute inset-0 bg-gradient-to-l from-background/95 via-background/80 to-background/40" />
-      <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/60" />
+      <div className="absolute inset-0 bg-gradient-to-l from-background/90 via-background/50 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
 
       <div className="relative mx-auto w-full max-w-7xl px-4 pt-32 pb-20 sm:px-6">
         <div className="max-w-2xl">
