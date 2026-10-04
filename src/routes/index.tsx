@@ -23,7 +23,10 @@ import {
 import logo from "@/assets/logo.png";
 import bedroomImg from "@/assets/bedroom.jpg";
 import majlisImg from "@/assets/majlis.jpg";
-import sofaImg from "@/assets/sofa.jpg";
+import sofaCream from "@/assets/sofa-cream.png.asset.json";
+import setCurved from "@/assets/set-curved.webp.asset.json";
+import sofaModern from "@/assets/sofa-modern.avif.asset.json";
+const sofaImg = sofaCream.url;
 import diningImg from "@/assets/dining.jpg";
 import officeImg from "@/assets/office.jpg";
 import decorImg from "@/assets/decor.jpg";
@@ -119,7 +122,7 @@ const GALLERY = [
     span: "md:col-span-2 md:row-span-2",
   },
   {
-    img: majlisImg,
+    img: setCurved.url,
     title: "المجالس والديوانيات",
     desc: "أصالة طويلة في التفاصيل",
     span: "md:col-span-2",
@@ -137,7 +140,7 @@ const GALLERY = [
     span: "md:col-span-1",
   },
   {
-    img: officeImg,
+    img: sofaModern.url,
     title: "المكاتب التنفيذية",
     desc: "هيئة إنجاز",
     span: "md:col-span-2",
@@ -247,12 +250,12 @@ function Hero() {
   return (
     <section id="home" className="relative flex min-h-screen items-center overflow-hidden">
       <img
-        src={bedroomImg}
-        alt="غرفة نوم ملكية من قمة بلوتو"
+        src={setCurved.url}
+        alt="مجلس عصري من قمة بلوتو"
         className="absolute inset-0 h-full w-full object-cover"
       />
-      <div className="absolute inset-0 bg-gradient-to-l from-background/95 via-background/80 to-background/40" />
-      <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/60" />
+      <div className="absolute inset-0 bg-gradient-to-l from-background/90 via-background/50 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
 
       <div className="relative mx-auto w-full max-w-7xl px-4 pt-32 pb-20 sm:px-6">
         <div className="max-w-2xl">
