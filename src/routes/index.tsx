@@ -1,3 +1,6 @@
+import work1 from "@/assets/work-1.jpg.asset.json";
+import work2 from "@/assets/work-2.jpg.asset.json";
+import work3 from "@/assets/work-3.jpg.asset.json";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect } from "react";
 import {
@@ -463,7 +466,22 @@ function Work() {
             للنشر.
           </p>
         </div>
-        <div className="reveal mt-14 grid gap-6 sm:grid-cols-2">
+        <div className="reveal mt-14 grid gap-4 sm:grid-cols-3 sm:grid-rows-2">
+          {[work1, work2, work3].map((img, i) => (
+            <div
+              key={img.url}
+              className={`group overflow-hidden rounded-3xl border border-gold/20 shadow-xl ${i === 0 ? "sm:col-span-2 sm:row-span-2 h-80 sm:h-[34rem]" : "h-64"}`}
+            >
+              <img
+                src={img.url}
+                alt="أثاث من أعمال قمة بلوتو"
+                loading="lazy"
+                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+            </div>
+          ))}
+        </div>
+        <div className="reveal mt-10 grid gap-6 sm:grid-cols-2">
           {WORK_ITEMS.map((item) => (
             <div
               key={item}
