@@ -1,3 +1,6 @@
+import work1 from "@/assets/work-1.jpg.asset.json";
+import work2 from "@/assets/work-2.jpg.asset.json";
+import work3 from "@/assets/work-3.jpg.asset.json";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect } from "react";
 import {
