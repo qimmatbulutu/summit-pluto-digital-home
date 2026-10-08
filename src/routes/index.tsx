@@ -18,11 +18,9 @@ import {
 } from "lucide-react";
 
 import logo from "@/assets/logo.png";
-import bedroomImg from "@/assets/bedroom.jpg";
 import majlisImg from "@/assets/majlis.jpg";
 import sofaCream from "@/assets/sofa-cream.png.asset.json";
 import setCurved from "@/assets/set-curved.webp.asset.json";
-import sofaModern from "@/assets/sofa-modern.avif.asset.json";
 const sofaImg = sofaCream.url;
 
 export const Route = createFileRoute("/")({
