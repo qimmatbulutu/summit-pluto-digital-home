@@ -5,45 +5,38 @@ import {
   Twitter,
   Phone,
   Mail,
-  MapPin,
-  Clock,
-  Star,
-  Sofa,
-  Ruler,
-  Compass,
-  Flame,
+  Users,
   Building2,
-  Truck,
+  Landmark,
+  HeartPulse,
+  Sofa,
+  Sun,
   Sparkles,
-  Crown,
-  ShieldCheck,
-  Quote,
+  Check,
+  Factory,
+  Briefcase,
 } from "lucide-react";
 
 import logo from "@/assets/logo.png";
-import bedroomImg from "@/assets/bedroom.jpg";
 import majlisImg from "@/assets/majlis.jpg";
 import sofaCream from "@/assets/sofa-cream.png.asset.json";
 import setCurved from "@/assets/set-curved.webp.asset.json";
-import sofaModern from "@/assets/sofa-modern.avif.asset.json";
 const sofaImg = sofaCream.url;
-import diningImg from "@/assets/dining.jpg";
-import officeImg from "@/assets/office.jpg";
-import decorImg from "@/assets/decor.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "قمة بلوتو | أثاث فاخر مصنوع بإتقان" },
+      { title: "قمة بلوتو | حلول أثاث تناسب احتياجك" },
       {
         name: "description",
         content:
-          "قمة بلوتو — أثاث فاخر مصنوع بإتقان: مجالس ملكية، غرف نوم، معيشة، طاولات طعام ومكاتب تنفيذية. تصميم وتنفيذ وضمان 10 سنوات.",
+          "قمة بلوتو للأثاث — حلول أثاث للأفراد وقطاعات الأعمال، نعمل مباشرة من المصنع. اطّلع على المنتجات المتاحة وتواصل معنا عبر واتساب لمعرفة التفاصيل والخيارات.",
       },
-      { property: "og:title", content: "قمة بلوتو | أثاث فاخر مصنوع بإتقان" },
+      { property: "og:title", content: "قمة بلوتو | حلول أثاث تناسب احتياجك" },
       {
         property: "og:description",
-        content: "أثاث فاخر مصنوع بإتقان — مجالس، غرف نوم، معيشة ومكاتب تنفيذية من قمة بلوتو.",
+        content:
+          "حلول أثاث للأفراد وقطاعات الأعمال من قمة بلوتو، مباشرة من المصنع. اطّلع على المنتجات وتواصل معنا عبر واتساب.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -51,6 +44,12 @@ export const Route = createFileRoute("/")({
   }),
   component: LandingPage,
 });
+
+/* ---------- Contact ---------- */
+
+const PHONE_DISPLAY = "+966 53 799 2507";
+const TEL = "tel:+966537992507";
+const waLink = (msg: string) => `https://wa.me/966537992507?text=${encodeURIComponent(msg)}`;
 
 /* ---------- Tools ---------- */
 
@@ -76,114 +75,73 @@ function useReveal() {
 const NAV = [
   { label: "الرئيسية", href: "#home" },
   { label: "من نحن", href: "#about" },
-  { label: "خدماتنا", href: "#services" },
-  { label: "معارضنا", href: "#gallery" },
+  { label: "منتجاتنا", href: "#products" },
+  { label: "قطاع الأعمال", href: "#business" },
+  { label: "أعمالنا", href: "#work" },
   { label: "تواصل معنا", href: "#contact" },
 ];
 
-const SERVICES = [
+const SERVE = [
   {
-    icon: Sofa,
-    title: "أثاث جاهز فاخر",
-    desc: "مجموعات مختارة بعناية من أفخم التصاميم، جاهزة للتسليم الفوري في معارضنا الثلاثة.",
-  },
-  {
-    icon: Ruler,
-    title: "تصنيع حسب الطلب",
-    desc: "نصمم وننفذ القطعة على مقاسك ومواصفاتك: قماش، خشب، وتفاصيل ذهبية تختارها بنفسك.",
-  },
-  {
-    icon: Compass,
-    title: "تصميم داخلي",
-    desc: "فريق مصممين محترفين يحوّل مساحتك إلى تحفة متكاملة من الفكرة حتى آخر قطعة ديكور.",
-  },
-  {
-    icon: Flame,
-    title: "مجالس وديوانيات",
-    desc: "مجالس ملكية وديوانيات شعبية بأخشاب نادرة وتطريز يدوي يحفظ هوية الأصالة.",
+    icon: Users,
+    title: "الأفراد والمنازل",
+    desc: "احتياجات الأثاث المختلفة للمنازل والمساحات السكنية.",
   },
   {
     icon: Building2,
-    title: "فنادق ومكاتب",
-    desc: "تنسيق وتوريد كامل للفنادق والمكاتب التنفيذية بأرقى المعايير العالمية.",
+    title: "الشركات والمؤسسات",
+    desc: "حلول أثاث تناسب بيئات العمل واحتياجات المنشآت.",
   },
   {
-    icon: Truck,
-    title: "توصيل وتركيب",
-    desc: "شحن مؤمَّن وتركيب احترافي في جميع مناطق المملكة، مع ضمان يصل إلى 10 سنوات.",
+    icon: Landmark,
+    title: "الجهات الحكومية",
+    desc: "حلول أثاث للمكاتب والمرافق والمساحات المختلفة حسب الاحتياج.",
+  },
+  {
+    icon: HeartPulse,
+    title: "المستشفيات والقطاعات المختلفة",
+    desc: "دراسة الاحتياج وتوفير حلول الأثاث المناسبة حسب طبيعة المشروع.",
   },
 ];
 
-const GALLERY = [
+const PRODUCTS = [
   {
-    img: bedroomImg,
-    title: "غرف النوم الملكية",
-    desc: "نوم خاطف يغمر السقف والجدار من الخشب والقماش",
-    span: "md:col-span-2 md:row-span-2",
+    icon: Sofa,
+    title: "الكنب",
+    desc: "استعرض تشكيلات الكنب المتوفرة لدى قمة بلوتو.",
+    cta: "استعرض الكنب",
+    msg: "مرحباٌ، أرغب في استعراض تشكيلة الكنب",
   },
   {
-    img: setCurved.url,
-    title: "المجالس والديوانيات",
-    desc: "أصالة طويلة في التفاصيل",
-    span: "md:col-span-2",
-  },
-  {
-    img: diningImg,
-    title: "طاولات الطعام",
-    desc: "بأحجام شتى",
-    span: "md:col-span-1",
-  },
-  {
-    img: sofaImg,
-    title: "كنب المعيشة",
-    desc: "هيئة حديثة ترتاح إليها",
-    span: "md:col-span-1",
-  },
-  {
-    img: sofaModern.url,
-    title: "المكاتب التنفيذية",
-    desc: "هيئة إنجاز",
-    span: "md:col-span-2",
-  },
-  {
-    img: decorImg,
-    title: "الديكور والمرايا",
-    desc: "اللمسة النهائية التي تصنع الفرق",
-    span: "md:col-span-2",
+    icon: Sun,
+    title: "الستائر",
+    desc: "استعرض خيارات الستائر المتوفرة والتصاميم المناسبة للمساحات المختلفة.",
+    cta: "استعرض الستائر",
+    msg: "مرحباٌ، أرغب في استعراض خيارات الستائر",
   },
 ];
 
-const STATS = [
-  { value: "+20", label: "سنة من الخبرة", icon: Crown },
-  { value: "+50,000", label: "عميل سعيد", icon: Sparkles },
-  { value: "3", label: "معارض في الرياض وجدة", icon: Building2 },
-  { value: "10", label: "سنوات ضمان", icon: ShieldCheck },
+const CATALOG_FIELDS = [
+  "اسم المنتج",
+  "صورة المنتج",
+  "وصف مختصر",
+  "الخيارات المتوفرة",
+  "صور إضافية",
+  "رمز المنتج إن وجد",
 ];
 
-const TESTIMONIALS = [
-  {
-    name: "أحمد الشمري",
-    role: "عميل — حي الياسمين، الرياض",
-    text: "طلبت مجلس كامل بنفسي وصارت النتيجة أجمل مما تخيلت. التفاصيل الذهبية والتطريز اليدوي أمر لا يوصف، والتسليم قبل الموعد.",
-  },
-  {
-    name: "سارة العتيبي",
-    role: "مديرة فندق — جدة",
-    text: "فندقنا جمعه كلها من قمة بلوتو؛ 84 غرفة بجودة واحدة. الاحترافية والمتابعة بعد التسليم فرقتين واسعتين على كل من جرب قبلهم.",
-  },
-  {
-    name: "عبدالله الدوسري",
-    role: "رئيس مجلس إدارة — الدمام",
-    text: "مكتبي التنفيذي أصبح أجمل واجهة أمام العملاء. فريق التصميم فهم ذوقي من أول اجتماع، والتنفيذ كان مكانه لا يوصف.",
-  },
+const WORK_ITEMS = [
+  "صور المنتجات المنفذة",
+  "صور المشاريع",
+  "صور قبل وبعد إذا كانت متوفرة",
+  "صور مراحل العمل والتجهيز",
 ];
 
 const SOCIALS = [
   { icon: Instagram, label: "انستقرام", href: "https://instagram.com/qimmatpluto" },
-  { icon: Twitter, label: "إكس (تويتر)", href: "https://x.com/qimmatpluto" },
   { icon: TikTokIcon, label: "تيك توك", href: "https://tiktok.com/@qimmatpluto" },
+  { icon: Twitter, label: "إكس (تويتر)", href: "https://x.com/qimmatpluto" },
   { icon: SnapchatIcon, label: "سناب شات", href: "https://snapchat.com/add/qimmatpluto" },
-  { icon: WhatsAppIcon, label: "واتساب", href: "https://wa.me/966537992507" },
 ];
 
 /* ---------- Custom brand-channel icons (not available in lucide) ---------- */
@@ -224,7 +182,7 @@ function Header() {
             قمة بلوتو
           </span>
         </a>
-        <nav className="hidden items-center gap-8 md:flex">
+        <nav className="hidden items-center gap-7 lg:flex">
           {NAV.map((item) => (
             <a
               key={item.href}
@@ -236,10 +194,10 @@ function Header() {
           ))}
         </nav>
         <a href="#contact" className="btn-gold hidden rounded-full px-6 py-2.5 text-sm font-bold md:inline-flex">
-          احجز زيارتك
+          تواصل معنا
         </a>
         <a href="#contact" className="btn-gold rounded-full px-5 py-2 text-sm font-bold md:hidden">
-          احجز
+          تواصل
         </a>
       </div>
     </header>
@@ -260,27 +218,30 @@ function Hero() {
       <div className="relative mx-auto w-full max-w-7xl px-4 pt-32 pb-20 sm:px-6">
         <div className="max-w-2xl">
           <span className="reveal is-visible inline-flex items-center gap-2 rounded-full border border-gold/30 bg-card/60 px-5 py-2 text-sm font-bold text-primary backdrop-blur">
-            <Crown className="h-4 w-4" />
-            أثاث فاخر منذ 2005 — الرياض
+            <Factory className="h-4 w-4" />
+            نعمل مباشرة من المصنع
           </span>
-          <h1 className="reveal is-visible mt-6 font-display text-6xl leading-[1.15] font-bold text-gold-gradient sm:text-7xl lg:text-8xl">
-            أثاث يليق
+          <h1 className="reveal is-visible mt-6 font-display text-5xl leading-[1.2] font-bold text-gold-gradient sm:text-6xl lg:text-7xl">
+            حلول أثاث
             <br />
-            بالقِمّم
+            تناسب احتياجك
           </h1>
-          <p className="reveal is-visible mt-6 max-w-xl text-xl leading-relaxed text-foreground/90 sm:text-2xl">
-            في <span className="font-bold text-primary">قمة بلوتو</span> نصنع قطعاً تُحكى عنها
-            الحكايات: مجالس ملكية، غرف نوم، معيشة ومكاتب — بحرفية يدوية وتفاصيل ذهبية تصنع الفرق.
+          <p className="reveal is-visible mt-6 max-w-xl text-lg leading-relaxed text-foreground/90 sm:text-xl">
+            في <span className="font-bold text-primary">قمة بلوتو</span> نعمل على توفير حلول الأثاث
+            للأفراد وقطاعات الأعمال، مع إمكانية الاطلاع على المنتجات والتواصل معنا مباشرة لمعرفة
+            التفاصيل والخيارات المتاحة.
           </p>
           <div className="reveal is-visible mt-10 flex flex-wrap gap-4">
-            <a
-              href="#gallery"
-              className="btn-gold rounded-full px-8 py-4 text-lg font-bold"
-            >
-              تصفّح معارضنا
+            <a href="#products" className="btn-gold rounded-full px-8 py-4 text-lg font-bold">
+              استعرض المنتجات
             </a>
-            <a href="#contact" className="btn-ghost-gold rounded-full px-8 py-4 text-lg font-bold">
-              تواصل معنا
+            <a
+              href={waLink("مرحباٌ، أرغب في الاطلاع على منتجات قمة بلوتو")}
+              target="_blank"
+              rel="noreferrer"
+              className="btn-ghost-gold rounded-full px-8 py-4 text-lg font-bold"
+            >
+              تواصل معنا عبر واتساب
             </a>
           </div>
         </div>
@@ -299,7 +260,7 @@ function About() {
           <div className="absolute -inset-4 rounded-4xl border border-gold/20" />
           <img
             src={majlisImg}
-            alt="مجلس فاخر من قمة بلوتو"
+            alt="أثاث من قمة بلوتو"
             loading="lazy"
             width={1024}
             height={1024}
@@ -309,162 +270,243 @@ function About() {
         <div className="reveal">
           <span className="text-sm font-bold tracking-widest text-primary uppercase">من نحن</span>
           <h2 className="mt-4 font-display text-4xl font-bold leading-snug text-gold-gradient sm:text-5xl">
-            حكاية خشبٍ وذهبٍ كُتبت منذ 2005
+            قمة بلوتو للأثاث
           </h2>
           <p className="mt-6 text-lg leading-relaxed text-foreground/85">
-            بدأت <span className="font-bold text-primary">قمة بلوتو</span> من ورشة صغيرة في الرياض
-            بحلم واحد: أن يكون الأثاث العربي مرجعاً عالمياً في الفخامة. اليوم، وبعد أكثر من عشرين
-            سنة، صارت ورشتنا مدرسةً تخرّج فيها التحف الثلاثية أثاثاً يزين القصور والفنادق والبيوت
-            في أنحاء المملكة.
+            قمة بلوتو تعمل في مجال الأثاث، ونسعى إلى تقديم منتجات وحلول تناسب احتياجات عملائنا، سواء
+            للاستخدام السكني أو لقطاعات الأعمال المختلفة.
+          </p>
+          <p className="mt-4 text-lg leading-relaxed text-foreground/85">
+            نعمل مباشرة من المصنع، ونسعى إلى توفير تجربة واضحة للعميل تبدأ من معرفة احتياجه واختيار
+            المنتج المناسب وحتى إتمام الطلب.
           </p>
           <ul className="mt-8 space-y-4">
             {[
-              "أخشاب موزّعة وزان ودوسة مدروسة من مصادر معتمدة عالمياً",
-              "تطريز يدوي وتفاصيل ذهبية تنفّذ بأيدي أمهر الصنّاع",
-              "فريق تصميم داخلي كامل من الفكرة حتى التسليم",
+              "حلول أثاث للأفراد وقطاعات الأعمال",
+              "العمل مباشرة من المصنع",
+              "تجربة واضحة من معرفة الاحتياج حتى إتمام الطلب",
             ].map((point) => (
               <li key={point} className="flex items-start gap-3 text-foreground/85">
-                <Star className="mt-1 h-5 w-5 shrink-0 fill-primary text-primary" />
+                <Check className="mt-1 h-5 w-5 shrink-0 text-primary" />
                 <span>{point}</span>
               </li>
             ))}
           </ul>
-          <div className="mt-10 grid grid-cols-3 gap-4">
-            {STATS.slice(0, 3).map((stat) => (
-              <div key={stat.label} className="card-luxury p-5 text-center">
-                <stat.icon className="mx-auto h-6 w-6 text-primary" />
-                <div className="mt-2 font-display text-3xl font-bold text-gold-gradient">
-                  {stat.value}
-                </div>
-                <div className="mt-1 text-xs text-muted-foreground">{stat.label}</div>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
     </section>
   );
 }
 
-function Services() {
+function Serve() {
   return (
-    <section id="services" className="py-24 sm:py-32">
+    <section id="serve" className="py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="reveal mx-auto max-w-2xl text-center">
-          <span className="text-sm font-bold tracking-widest text-primary uppercase">خدماتنا</span>
+          <span className="text-sm font-bold tracking-widest text-primary uppercase">نخدم</span>
           <h2 className="mt-4 font-display text-4xl font-bold text-gold-gradient sm:text-5xl">
-            كل ما يحتاجه بيتك تحت قمة واحدة
+            الأفراد وقطاعات الأعمال
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
-            من الفكرة الأولى حتى آخر برغي — نرافقك في كل خطوة.
+            نعمل على توفير حلول الأثاث لعدة فئات، ومنها:
+          </p>
+        </div>
+        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {SERVE.map((item) => (
+            <div key={item.title} className="reveal card-luxury group p-8">
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-gold/30 bg-primary/10 transition-transform group-hover:scale-110">
+                <item.icon className="h-7 w-7 text-primary" />
+              </div>
+              <h3 className="mt-6 font-display text-2xl font-bold text-foreground">{item.title}</h3>
+              <p className="mt-3 leading-relaxed text-muted-foreground">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Products() {
+  return (
+    <section id="products" className="section-glow py-24 sm:py-32">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="reveal mx-auto max-w-2xl text-center">
+          <span className="text-sm font-bold tracking-widest text-primary uppercase">منتجاتنا</span>
+          <h2 className="mt-4 font-display text-4xl font-bold text-gold-gradient sm:text-5xl">
+            استعرض منتجات قمة بلوتو
+          </h2>
+          <p className="mt-4 text-lg text-muted-foreground">
+            سيتم توفير كتالوج يتيح للعميل تصفح المنتجات المتاحة ومعرفة تفاصيل كل منتج والتواصل معنا
+            بشأنه.
           </p>
         </div>
         <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {SERVICES.map((service) => (
-            <div key={service.title} className="reveal card-luxury group p-8">
+          {PRODUCTS.map((product) => (
+            <div key={product.title} className="reveal card-luxury group flex flex-col p-8">
               <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-gold/30 bg-primary/10 transition-transform group-hover:scale-110">
-                <service.icon className="h-7 w-7 text-primary" />
+                <product.icon className="h-7 w-7 text-primary" />
               </div>
-              <h3 className="mt-6 font-display text-2xl font-bold text-foreground">
-                {service.title}
-              </h3>
-              <p className="mt-3 leading-relaxed text-muted-foreground">{service.desc}</p>
+              <h3 className="mt-6 font-display text-2xl font-bold text-foreground">{product.title}</h3>
+              <p className="mt-3 flex-1 leading-relaxed text-muted-foreground">{product.desc}</p>
+              <a
+                href={waLink(product.msg)}
+                target="_blank"
+                rel="noreferrer"
+                className="btn-gold mt-6 inline-flex justify-center rounded-full px-6 py-3 font-bold"
+              >
+                {product.cta}
+              </a>
             </div>
           ))}
+          <div className="reveal card-luxury flex flex-col p-8">
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-gold/30 bg-primary/10">
+              <Sparkles className="h-7 w-7 text-primary" />
+            </div>
+            <h3 className="mt-6 font-display text-2xl font-bold text-foreground">منتجات أخرى</h3>
+            <p className="mt-3 flex-1 leading-relaxed text-muted-foreground">
+              يتم إضافة الأقسام الأخرى بعد اعتماد قائمة المنتجات الكاملة من إدارة قمة بلوتو.
+            </p>
+          </div>
         </div>
       </div>
     </section>
   );
 }
 
-function Gallery() {
+function Catalog() {
   return (
-    <section id="gallery" className="section-glow py-24 sm:py-32">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="reveal mx-auto max-w-2xl text-center">
-          <span className="text-sm font-bold tracking-widest text-primary uppercase">معارضنا</span>
+    <section id="catalog" className="py-24 sm:py-32">
+      <div className="mx-auto max-w-5xl px-4 sm:px-6">
+        <div className="reveal card-luxury p-8 sm:p-12">
+          <span className="text-sm font-bold tracking-widest text-primary uppercase">الكتالوج</span>
           <h2 className="mt-4 font-display text-4xl font-bold text-gold-gradient sm:text-5xl">
-            مجموعات تُروى عنها الحكايات
+            لكل منتج يمكن عرض
+          </h2>
+          <div className="mt-8 grid gap-4 sm:grid-cols-2">
+            {CATALOG_FIELDS.map((field) => (
+              <div
+                key={field}
+                className="flex items-center gap-3 rounded-2xl border border-gold/20 bg-card/60 px-5 py-4"
+              >
+                <Check className="h-5 w-5 shrink-0 text-primary" />
+                <span className="font-bold text-foreground/90">{field}</span>
+              </div>
+            ))}
+          </div>
+          <p className="mt-8 leading-relaxed text-muted-foreground">
+            لا يتم عرض السعر أو نوع الخشب أو مدة التصنيع أو الضمان إلا بعد تأكيد هذه المعلومات من
+            صاحب المنشأة.
+          </p>
+          <a
+            href={waLink("مرحباٌ، أرغب في الاستفسار عن أحد المنتجات")}
+            target="_blank"
+            rel="noreferrer"
+            className="btn-gold mt-8 inline-flex items-center gap-3 rounded-full px-8 py-4 text-lg font-bold"
+          >
+            <WhatsAppIcon className="h-5 w-5" />
+            استفسر عن المنتج عبر واتساب
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function FactorySection() {
+  return (
+    <section id="factory" className="section-glow py-24 sm:py-32">
+      <div className="mx-auto max-w-5xl px-4 sm:px-6">
+        <div className="reveal grid items-center gap-12 lg:grid-cols-2">
+          <div className="reveal relative overflow-hidden rounded-4xl border border-gold/25">
+            <img
+              src={sofaImg}
+              alt="كنب من قمة بلوتو"
+              loading="lazy"
+              width={1024}
+              height={1024}
+              className="h-full w-full object-cover"
+            />
+          </div>
+          <div className="reveal">
+            <span className="text-sm font-bold tracking-widest text-primary uppercase">
+              العمل مباشرة من المصنع
+            </span>
+            <h2 className="mt-4 font-display text-4xl font-bold text-gold-gradient sm:text-5xl">
+              من المصنع مباشرة
+            </h2>
+            <p className="mt-6 text-lg leading-relaxed text-foreground/85">
+              تعمل قمة بلوتو مباشرة من المصنع، ويمكن للعميل التواصل معنا لمعرفة المنتجات والخيارات
+              المناسبة لاحتياجه.
+            </p>
+            <p className="mt-4 leading-relaxed text-muted-foreground">
+              لا يتم ذكر وجود معارض أو فروع في النسخة الحالية من الموقع.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Work() {
+  return (
+    <section id="work" className="py-24 sm:py-32">
+      <div className="mx-auto max-w-5xl px-4 sm:px-6">
+        <div className="reveal mx-auto max-w-2xl text-center">
+          <span className="text-sm font-bold tracking-widest text-primary uppercase">أعمالنا</span>
+          <h2 className="mt-4 font-display text-4xl font-bold text-gold-gradient sm:text-5xl">
+            بعض أعمال قمة بلوتو
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
-            تجوّل بين معارضنا الثلاثة وشاهد التحف قبل أن تختار.
+            سيتم عرض مجموعة من الأعمال التي تم تنفيذها فعليًا بعد تزويد فريق الموقع بالصور واعتمادها
+            للنشر.
           </p>
         </div>
-        <div className="mt-14 grid auto-rows-[240px] grid-cols-1 gap-5 md:grid-cols-4">
-          {GALLERY.map((item) => (
-            <figure
-              key={item.title}
-              className={`reveal group relative overflow-hidden rounded-3xl border border-gold/20 ${item.span}`}
+        <div className="reveal mt-14 grid gap-6 sm:grid-cols-2">
+          {WORK_ITEMS.map((item) => (
+            <div
+              key={item}
+              className="card-luxury flex items-center gap-4 p-6"
             >
-              <img
-                src={item.img}
-                alt={item.title}
-                loading="lazy"
-                width={1024}
-                height={1024}
-                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent opacity-80 transition-opacity group-hover:opacity-95" />
-              <figcaption className="absolute inset-x-0 bottom-0 p-6">
-                <h3 className="font-display text-2xl font-bold text-gold-gradient">{item.title}</h3>
-                <p className="mt-1 text-sm text-foreground/80 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-                  {item.desc}
-                </p>
-              </figcaption>
-            </figure>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function Stats() {
-  return (
-    <section className="border-y border-gold/15 bg-card/40 py-16">
-      <div className="mx-auto grid max-w-7xl gap-10 px-4 text-center sm:grid-cols-2 sm:px-6 lg:grid-cols-4">
-        {STATS.map((stat) => (
-          <div key={stat.label} className="reveal">
-            <stat.icon className="mx-auto h-8 w-8 text-primary" />
-            <div className="mt-3 font-display text-5xl font-bold text-gold-gradient">
-              {stat.value}
-            </div>
-            <div className="mt-2 font-bold text-muted-foreground">{stat.label}</div>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function Testimonials() {
-  return (
-    <section className="py-24 sm:py-32">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="reveal mx-auto max-w-2xl text-center">
-          <span className="text-sm font-bold tracking-widest text-primary uppercase">
-            آراء عملائنا
-          </span>
-          <h2 className="mt-4 font-display text-4xl font-bold text-gold-gradient sm:text-5xl">
-            قالوا عن قمة بلوتو
-          </h2>
-        </div>
-        <div className="mt-14 grid gap-6 md:grid-cols-3">
-          {TESTIMONIALS.map((item) => (
-            <blockquote key={item.name} className="reveal card-luxury relative p-8">
-              <Quote className="h-8 w-8 text-primary/40" />
-              <div className="mt-4 flex gap-1">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star key={i} className="h-4 w-4 fill-primary text-primary" />
-                ))}
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-gold/30 bg-primary/10">
+                <Sparkles className="h-5 w-5 text-primary" />
               </div>
-              <p className="mt-4 leading-relaxed text-foreground/85">{item.text}</p>
-              <footer className="mt-6">
-                <div className="font-bold text-primary">{item.name}</div>
-                <div className="text-sm text-muted-foreground">{item.role}</div>
-              </footer>
-            </blockquote>
+              <span className="font-bold text-foreground/90">{item}</span>
+            </div>
           ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Business() {
+  return (
+    <section id="business" className="section-glow py-24 sm:py-32">
+      <div className="mx-auto max-w-5xl px-4 sm:px-6">
+        <div className="reveal card-luxury p-8 sm:p-12">
+          <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-gold/30 bg-primary/10">
+            <Briefcase className="h-7 w-7 text-primary" />
+          </div>
+          <h2 className="mt-6 font-display text-4xl font-bold text-gold-gradient sm:text-5xl">
+            هل تبحث عن أثاث لشركتك أو منشأتك؟
+          </h2>
+          <p className="mt-6 text-lg leading-relaxed text-foreground/85">
+            تستقبل قمة بلوتو طلبات الشركات والمؤسسات والجهات الحكومية والمستشفيات وغيرها من قطاعات
+            الأعمال.
+          </p>
+          <p className="mt-4 leading-relaxed text-muted-foreground">
+            يمكن للجهة التواصل معنا وإرسال متطلبات المشروع لدراستها ومعرفة الحلول الممكنة.
+          </p>
+          <a
+            href={waLink("مرحباٌ، أرغب في التواصل بشأن مشروع أثاث")}
+            target="_blank"
+            rel="noreferrer"
+            className="btn-gold mt-8 inline-flex rounded-full px-8 py-4 text-lg font-bold"
+          >
+            تواصل معنا بشأن مشروعك
+          </a>
         </div>
       </div>
     </section>
@@ -473,42 +515,70 @@ function Testimonials() {
 
 function Contact() {
   return (
-    <section id="contact" className="section-glow border-t border-gold/15 py-24 sm:py-32">
+    <section id="contact" className="border-t border-gold/15 py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="reveal mx-auto max-w-2xl text-center">
           <span className="text-sm font-bold tracking-widest text-primary uppercase">
             تواصل معنا
           </span>
           <h2 className="mt-4 font-display text-4xl font-bold text-gold-gradient sm:text-5xl">
-            زُر معرضنا أو اتصل بنا الآن
+            تواصل مع قمة بلوتو
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
-            فريقنا جاهز لاستقبالك في أي وقت ولهجة من التواصل.
+            هل لديك استفسار عن أحد المنتجات أو ترغب في معرفة الخيارات المتاحة؟ تواصل معنا وسيقوم
+            الفريق بمساعدتك.
           </p>
         </div>
 
-        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {[
-            { icon: Phone, title: "اتصل بنا", line1: "+966 53 799 2507", line2: "متاحون لخدمتكم" },
-            { icon: Mail, title: "راسلنا", line1: "info@qimmatpluto.sa", line2: "نرد خلال يوم عمل" },
-            { icon: MapPin, title: "المعرض الرئيسي", line1: "طريق الملك فهد", line2: "حي المروج، الرياض" },
-            { icon: Clock, title: "ساعات العمل", line1: "السبت - الخميس", line2: "10 صباحاً - 11 مساءً" },
-          ].map((card) => (
-            <div key={card.title} className="reveal card-luxury p-8 text-center">
-              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-gold/30 bg-primary/10">
-                <card.icon className="h-6 w-6 text-primary" />
-              </div>
-              <h3 className="mt-5 font-display text-xl font-bold">{card.title}</h3>
-              <p className="mt-2 font-bold text-foreground/90" dir="auto">
-                {card.line1}
-              </p>
-              <p className="mt-1 text-sm text-muted-foreground">{card.line2}</p>
+        <div className="mt-14 grid gap-6 sm:grid-cols-3">
+          <div className="reveal card-luxury p-8 text-center">
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-gold/30 bg-primary/10">
+              <WhatsAppIcon className="h-6 w-6 text-primary" />
             </div>
-          ))}
+            <h3 className="mt-5 font-display text-xl font-bold">واتساب</h3>
+            <p className="mt-2 font-bold text-foreground/90" dir="auto">
+              {PHONE_DISPLAY}
+            </p>
+            <a
+              href={waLink("مرحباٌ")}
+              target="_blank"
+              rel="noreferrer"
+              className="btn-gold mt-5 inline-flex justify-center rounded-full px-6 py-2.5 font-bold"
+            >
+              تواصل عبر واتساب
+            </a>
+          </div>
+
+          <div className="reveal card-luxury p-8 text-center">
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-gold/30 bg-primary/10">
+              <Phone className="h-6 w-6 text-primary" />
+            </div>
+            <h3 className="mt-5 font-display text-xl font-bold">الاتصال</h3>
+            <a href={TEL} className="mt-2 block font-bold text-foreground/90" dir="auto">
+              {PHONE_DISPLAY}
+            </a>
+            <span className="mt-5 inline-flex rounded-full border border-gold/25 px-6 py-2.5 text-sm text-muted-foreground">
+              اتصل بنا مباشرة
+            </span>
+          </div>
+
+          <div className="reveal card-luxury p-8 text-center">
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-gold/30 bg-primary/10">
+              <Mail className="h-6 w-6 text-primary" />
+            </div>
+            <h3 className="mt-5 font-display text-xl font-bold">البريد الإلكتروني</h3>
+            <p className="mt-2 text-muted-foreground">يُضاف البريد بعد اعتماده</p>
+            <span className="mt-5 inline-flex rounded-full border border-gold/25 px-6 py-2.5 text-sm text-muted-foreground">
+              قريباً
+            </span>
+          </div>
         </div>
 
-        <div className="reveal mt-12 flex flex-col items-center gap-6">
-          <span className="font-bold text-muted-foreground">تابعنا على قنواتنا:</span>
+        <div className="reveal mt-16 flex flex-col items-center gap-6">
+          <span className="font-display text-2xl font-bold text-gold-gradient">تابع قمة بلوتو</span>
+          <span className="max-w-md text-center text-sm text-muted-foreground">
+            يمكن إضافة حسابات التواصل الاجتماعي بعد استلام الروابط الرسمية.
+          </span>
           <div className="flex flex-wrap justify-center gap-4">
             {SOCIALS.map((social) => (
               <a
@@ -538,7 +608,7 @@ function Footer() {
           <img src={logo} alt="شعار قمة بلوتو" loading="lazy" className="h-16 w-16 object-contain" />
           <div>
             <div className="font-display text-2xl font-bold text-gold-gradient">قمة بلوتو</div>
-            <div className="text-sm text-muted-foreground">أثاث يليق بالقِمّم</div>
+            <div className="text-sm text-muted-foreground">أثاث</div>
           </div>
         </div>
         <nav className="flex flex-wrap justify-center gap-x-8 gap-y-3">
@@ -568,7 +638,7 @@ function Footer() {
         </div>
       </div>
       <div className="mt-10 border-t border-gold/10 pt-6 text-center text-sm text-muted-foreground">
-        © 2026 قمة بلوتو — جميع الحقوق محفوظة. هذه الصفحة نموذج تجريبي بمعلومات افتراضية.
+        © 2026 قمة بلوتو — جميع الحقوق محفوظة.
       </div>
     </footer>
   );
@@ -577,7 +647,7 @@ function Footer() {
 function WhatsAppFloat() {
   return (
     <a
-      href="https://wa.me/966537992507"
+      href={waLink("مرحباٌ")}
       target="_blank"
       rel="noreferrer"
       aria-label="تواصل عبر واتساب"
@@ -596,10 +666,12 @@ function LandingPage() {
       <main>
         <Hero />
         <About />
-        <Services />
-        <Gallery />
-        <Stats />
-        <Testimonials />
+        <Serve />
+        <Products />
+        <Catalog />
+        <FactorySection />
+        <Work />
+        <Business />
         <Contact />
       </main>
       <Footer />
