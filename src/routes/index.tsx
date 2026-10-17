@@ -1,8 +1,5 @@
-import work1 from "@/assets/work-1.jpg.asset.json";
-import work2 from "@/assets/work-2.jpg.asset.json";
-import work3 from "@/assets/work-3.jpg.asset.json";
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   Instagram,
   Twitter,
@@ -50,9 +47,9 @@ export const Route = createFileRoute("/")({
 
 /* ---------- Contact ---------- */
 
-const PHONE_DISPLAY = "+966 53 799 2507";
-const TEL = "tel:+966537992507";
-const waLink = (msg: string) => `https://wa.me/966537992507?text=${encodeURIComponent(msg)}`;
+const PHONE_DISPLAY = "055 370 5848";
+const TEL = "tel:+966553705848";
+const waLink = (msg: string) => `https://wa.me/966553705848?text=${encodeURIComponent(msg)}`;
 
 /* ---------- Tools ---------- */
 
@@ -196,7 +193,10 @@ function Header() {
             </a>
           ))}
         </nav>
-        <a href="#contact" className="btn-gold hidden rounded-full px-6 py-2.5 text-sm font-bold md:inline-flex">
+        <a
+          href="#contact"
+          className="btn-gold hidden rounded-full px-6 py-2.5 text-sm font-bold md:inline-flex"
+        >
           تواصل معنا
         </a>
         <a href="#contact" className="btn-gold rounded-full px-5 py-2 text-sm font-bold md:hidden">
@@ -350,7 +350,9 @@ function Products() {
               <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-gold/30 bg-primary/10 transition-transform group-hover:scale-110">
                 <product.icon className="h-7 w-7 text-primary" />
               </div>
-              <h3 className="mt-6 font-display text-2xl font-bold text-foreground">{product.title}</h3>
+              <h3 className="mt-6 font-display text-2xl font-bold text-foreground">
+                {product.title}
+              </h3>
               <p className="mt-3 flex-1 leading-relaxed text-muted-foreground">{product.desc}</p>
               <a
                 href={waLink(product.msg)}
@@ -452,7 +454,27 @@ function FactorySection() {
   );
 }
 
+const WORK_IMAGES = Array.from(
+  { length: 55 },
+  (_, i) => `${import.meta.env.BASE_URL}works/work-${String(i + 1).padStart(2, "0")}.webp`,
+);
+
 function Work() {
+  const [visible, setVisible] = useState(12);
+  const [active, setActive] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (active === null) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setActive(null);
+      if (e.key === "ArrowLeft") setActive((a) => (a === null ? a : (a + 1) % WORK_IMAGES.length));
+      if (e.key === "ArrowRight")
+        setActive((a) => (a === null ? a : (a - 1 + WORK_IMAGES.length) % WORK_IMAGES.length));
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [active]);
+
   return (
     <section id="work" className="py-24 sm:py-32">
       <div className="mx-auto max-w-5xl px-4 sm:px-6">
@@ -462,31 +484,95 @@ function Work() {
             بعض أعمال قمة بلوتو
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
-            سيتم عرض مجموعة من الأعمال التي تم تنفيذها فعليًا بعد تزويد فريق الموقع بالصور واعتمادها
-            للنشر.
+            مجموعة من الأعمال والمنتجات التي نفذتها قمة بلوتو من الكنب والجلسات والمجالس.
           </p>
         </div>
-        <div className="reveal mt-14 grid gap-4 sm:grid-cols-3 sm:grid-rows-2">
-          {[work1, work2, work3].map((img, i) => (
-            <div
-              key={img.url}
-              className={`group overflow-hidden rounded-3xl border border-gold/20 shadow-xl ${i === 0 ? "sm:col-span-2 sm:row-span-2 h-80 sm:h-[34rem]" : "h-64"}`}
+        <div className="reveal mt-14 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
+          {WORK_IMAGES.slice(0, visible).map((src, i) => (
+            <button
+              key={src}
+              type="button"
+              onClick={() => setActive(i)}
+              className="group aspect-square overflow-hidden rounded-2xl border border-gold/20 shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              aria-label={`عرض العمل رقم ${i + 1}`}
             >
               <img
-                src={img.url}
-                alt="أثاث من أعمال قمة بلوتو"
+                src={src}
+                alt={`من أعمال قمة بلوتو ${i + 1}`}
                 loading="lazy"
+                decoding="async"
                 className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
-            </div>
+            </button>
           ))}
         </div>
+        {visible < WORK_IMAGES.length && (
+          <div className="mt-10 text-center">
+            <button
+              type="button"
+              onClick={() => setVisible((v) => Math.min(v + 12, WORK_IMAGES.length))}
+              className="rounded-full border border-gold/40 bg-primary/10 px-8 py-3 font-bold text-primary transition-colors hover:bg-primary hover:text-primary-foreground"
+            >
+              عرض المزيد من الأعمال ({WORK_IMAGES.length - visible})
+            </button>
+          </div>
+        )}
+        {active !== null && (
+          <div
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4"
+            onClick={() => setActive(null)}
+            role="dialog"
+            aria-modal="true"
+          >
+            <img
+              src={WORK_IMAGES[active]}
+              alt={`من أعمال قمة بلوتو ${active + 1}`}
+              className="max-h-[85vh] max-w-full rounded-xl object-contain shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            />
+            <button
+              type="button"
+              aria-label="إغلاق"
+              onClick={() => setActive(null)}
+              className="absolute top-4 left-4 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-2xl text-white hover:bg-white/20"
+            >
+              ×
+            </button>
+            <button
+              type="button"
+              aria-label="السابق"
+              onClick={(e) => {
+                e.stopPropagation();
+                setActive((a) =>
+                  a === null ? a : (a - 1 + WORK_IMAGES.length) % WORK_IMAGES.length,
+                );
+              }}
+              className="absolute right-3 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-3xl text-white hover:bg-white/20"
+            >
+              ›
+            </button>
+            <button
+              type="button"
+              aria-label="التالي"
+              onClick={(e) => {
+                e.stopPropagation();
+                setActive((a) => (a === null ? a : (a + 1) % WORK_IMAGES.length));
+              }}
+              className="absolute left-3 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-3xl text-white hover:bg-white/20"
+            >
+              ‹
+            </button>
+            <span
+              dir="ltr"
+              className="absolute bottom-4 left-1/2 -translate-x-1/2 text-sm text-white/70"
+            >
+              {active + 1} / {WORK_IMAGES.length}
+            </span>
+          </div>
+        )}
         <div className="reveal mt-10 grid gap-6 sm:grid-cols-2">
           {WORK_ITEMS.map((item) => (
-            <div
-              key={item}
-              className="card-luxury flex items-center gap-4 p-6"
-            >
+            <div key={item} className="card-luxury flex items-center gap-4 p-6">
               <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-gold/30 bg-primary/10">
                 <Sparkles className="h-5 w-5 text-primary" />
               </div>
@@ -623,7 +709,12 @@ function Footer() {
     <footer className="border-t border-gold/15 bg-card/40 py-14">
       <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 sm:px-6 md:grid-cols-3">
         <div className="flex items-center gap-3">
-          <img src={logo} alt="شعار قمة بلوتو" loading="lazy" className="h-16 w-16 object-contain" />
+          <img
+            src={logo}
+            alt="شعار قمة بلوتو"
+            loading="lazy"
+            className="h-16 w-16 object-contain"
+          />
           <div>
             <div className="font-display text-2xl font-bold text-gold-gradient">قمة بلوتو</div>
             <div className="text-sm text-muted-foreground">أثاث</div>
