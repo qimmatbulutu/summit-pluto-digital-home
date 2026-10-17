@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import {
   Instagram,
   Twitter,
@@ -15,6 +15,12 @@ import {
   Check,
   Factory,
   Briefcase,
+  Armchair,
+  LayoutGrid,
+  ScanSearch,
+  ChevronLeft,
+  ChevronRight,
+  X,
 } from "lucide-react";
 
 import logo from "@/assets/logo.png";
@@ -128,13 +134,6 @@ const CATALOG_FIELDS = [
   "الخيارات المتوفرة",
   "صور إضافية",
   "رمز المنتج إن وجد",
-];
-
-const WORK_ITEMS = [
-  "صور المنتجات المنفذة",
-  "صور المشاريع",
-  "صور قبل وبعد إذا كانت متوفرة",
-  "صور مراحل العمل والتجهيز",
 ];
 
 const SOCIALS = [
@@ -454,133 +453,322 @@ function FactorySection() {
   );
 }
 
-const WORK_IMAGES = Array.from(
-  { length: 55 },
-  (_, i) => `${import.meta.env.BASE_URL}works/work-${String(i + 1).padStart(2, "0")}.webp`,
-);
+/* ---------- Works catalog ---------- */
+
+type WorkCategory = {
+  id: string;
+  title: string;
+  desc: string;
+  icon: typeof Sofa;
+  images: number[];
+  msg: string;
+};
+
+const WORK_CATEGORIES: WorkCategory[] = [
+  {
+    id: "corner",
+    title: "كنب زاوية",
+    desc: "تشكيلات كنب زاوية بأشكال L و U تناسب المجالس وغرف المعيشة الواسعة.",
+    icon: Sofa,
+    images: [1, 7, 9, 19, 20, 23, 24, 26, 27, 28, 29, 46, 49],
+    msg: "مرحباٌ، أرغب في الاستفسار عن كنب الزاوية",
+  },
+  {
+    id: "straight",
+    title: "كنب مستقيم",
+    desc: "كنب ثلاثي ورباعي بتصاميم عصرية وكلاسيكية وأقمشة متعددة.",
+    icon: LayoutGrid,
+    images: [2, 3, 4, 5, 8, 11, 12, 22, 25, 30, 31, 45, 50, 51, 52, 54, 55],
+    msg: "مرحباٌ، أرغب في الاستفسار عن الكنب المستقيم",
+  },
+  {
+    id: "armchairs",
+    title: "كراسي فردية",
+    desc: "كراسي وكنب فردي مريح يكمّل الجلسة ويضيف لمسة أنيقة للمكان.",
+    icon: Armchair,
+    images: [13, 14, 16, 17, 18, 21, 33, 48, 53],
+    msg: "مرحباٌ، أرغب في الاستفسار عن الكراسي الفردية",
+  },
+  {
+    id: "majlis",
+    title: "مجالس وتصاميم داخلية",
+    desc: "مجالس عربية وتصاميم داخلية متكاملة للقصور والاستراحات والمخيمات.",
+    icon: Landmark,
+    images: [34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44],
+    msg: "مرحباٌ، أرغب في الاستفسار عن تصميم وتنفيذ المجالس",
+  },
+  {
+    id: "details",
+    title: "تفاصيل الصناعة",
+    desc: "لقطات قريبة تُظهر جودة الأقمشة والخياطة والأرجل الخشبية.",
+    icon: ScanSearch,
+    images: [6, 10, 15, 32, 47],
+    msg: "مرحباٌ، أرغب في معرفة تفاصيل الخامات والأقمشة",
+  },
+];
+
+const workSrc = (n: number) =>
+  `${import.meta.env.BASE_URL}works/work-${String(n).padStart(2, "0")}.webp`;
+
+const worksLabel = (n: number) => `${n} ${n >= 3 && n <= 10 ? "أعمال" : "عملًا"}`;
+
+const TOTAL_WORKS = WORK_CATEGORIES.reduce((sum, c) => sum + c.images.length, 0);
+
+function WorkGrid({
+  cat,
+  limit,
+  onOpen,
+}: {
+  cat: WorkCategory;
+  limit?: number;
+  onOpen: (cat: WorkCategory, index: number) => void;
+}) {
+  const imgs = limit ? cat.images.slice(0, limit) : cat.images;
+  return (
+    <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+      {imgs.map((n, i) => (
+        <button
+          key={n}
+          type="button"
+          onClick={() => onOpen(cat, i)}
+          className="group relative aspect-square overflow-hidden rounded-2xl border border-gold/20 shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          aria-label={`${cat.title} - صورة ${i + 1}`}
+        >
+          <img
+            src={workSrc(n)}
+            alt={`${cat.title} من أعمال قمة بلوتو`}
+            loading="lazy"
+            decoding="async"
+            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+          />
+          <span className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function CategoryHeader({ cat, action }: { cat: WorkCategory; action?: ReactNode }) {
+  return (
+    <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+      <div className="flex items-start gap-4">
+        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-gold/30 bg-primary/10">
+          <cat.icon className="h-6 w-6 text-primary" />
+        </div>
+        <div>
+          <h3 className="font-display text-2xl font-bold text-foreground sm:text-3xl">
+            {cat.title}
+            <span className="mr-3 align-middle text-sm font-bold text-primary">
+              {worksLabel(cat.images.length)}
+            </span>
+          </h3>
+          <p className="mt-1 text-muted-foreground">{cat.desc}</p>
+        </div>
+      </div>
+      {action}
+    </div>
+  );
+}
 
 function Work() {
-  const [visible, setVisible] = useState(12);
-  const [active, setActive] = useState<number | null>(null);
+  const [filter, setFilter] = useState<string>("all");
+  const [lightbox, setLightbox] = useState<{ cat: WorkCategory; index: number } | null>(null);
+
+  const open = (cat: WorkCategory, index: number) => setLightbox({ cat, index });
+  const step = (d: number) =>
+    setLightbox((lb) =>
+      lb ? { ...lb, index: (lb.index + d + lb.cat.images.length) % lb.cat.images.length } : lb,
+    );
 
   useEffect(() => {
-    if (active === null) return;
+    if (!lightbox) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setActive(null);
-      if (e.key === "ArrowLeft") setActive((a) => (a === null ? a : (a + 1) % WORK_IMAGES.length));
-      if (e.key === "ArrowRight")
-        setActive((a) => (a === null ? a : (a - 1 + WORK_IMAGES.length) % WORK_IMAGES.length));
+      if (e.key === "Escape") setLightbox(null);
+      if (e.key === "ArrowLeft") step(1);
+      if (e.key === "ArrowRight") step(-1);
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [active]);
+  }, [lightbox]);
+
+  const selectFilter = (id: string) => {
+    setFilter(id);
+    document.getElementById("work-catalog")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  const current = WORK_CATEGORIES.find((c) => c.id === filter);
 
   return (
     <section id="work" className="py-24 sm:py-32">
-      <div className="mx-auto max-w-5xl px-4 sm:px-6">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="reveal mx-auto max-w-2xl text-center">
           <span className="text-sm font-bold tracking-widest text-primary uppercase">أعمالنا</span>
           <h2 className="mt-4 font-display text-4xl font-bold text-gold-gradient sm:text-5xl">
-            بعض أعمال قمة بلوتو
+            كتالوج أعمال قمة بلوتو
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
-            مجموعة من الأعمال والمنتجات التي نفذتها قمة بلوتو من الكنب والجلسات والمجالس.
+            تصفّح أعمالنا مرتبة حسب القسم، واضغط على أي صورة لعرضها بحجم أكبر.
           </p>
         </div>
-        <div className="reveal mt-14 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
-          {WORK_IMAGES.slice(0, visible).map((src, i) => (
+
+        <div className="reveal mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+          {WORK_CATEGORIES.map((cat) => (
             <button
-              key={src}
+              key={cat.id}
               type="button"
-              onClick={() => setActive(i)}
-              className="group aspect-square overflow-hidden rounded-2xl border border-gold/20 shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-              aria-label={`عرض العمل رقم ${i + 1}`}
+              onClick={() => selectFilter(cat.id)}
+              className="group relative h-36 overflow-hidden rounded-2xl border border-gold/20 text-right shadow-lg sm:h-44"
             >
               <img
-                src={src}
-                alt={`من أعمال قمة بلوتو ${i + 1}`}
+                src={workSrc(cat.images[0] ?? 1)}
+                alt=""
                 loading="lazy"
-                decoding="async"
-                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
               />
+              <span className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+              <span className="absolute right-4 bottom-3 left-4">
+                <span className="block font-display text-lg font-bold text-white sm:text-xl">
+                  {cat.title}
+                </span>
+                <span className="text-sm text-white/80">{worksLabel(cat.images.length)}</span>
+              </span>
             </button>
           ))}
         </div>
-        {visible < WORK_IMAGES.length && (
-          <div className="mt-10 text-center">
-            <button
-              type="button"
-              onClick={() => setVisible((v) => Math.min(v + 12, WORK_IMAGES.length))}
-              className="rounded-full border border-gold/40 bg-primary/10 px-8 py-3 font-bold text-primary transition-colors hover:bg-primary hover:text-primary-foreground"
-            >
-              عرض المزيد من الأعمال ({WORK_IMAGES.length - visible})
-            </button>
+
+        <div
+          id="work-catalog"
+          className="sticky top-20 z-30 -mx-4 mt-12 scroll-mt-24 overflow-x-auto bg-background/90 px-4 py-3 backdrop-blur sm:mx-0 sm:rounded-full sm:border sm:border-gold/20 sm:px-3"
+        >
+          <div className="flex w-max gap-2 sm:w-auto sm:flex-wrap sm:justify-center">
+            {[
+              { id: "all", title: "الكل", count: TOTAL_WORKS },
+              ...WORK_CATEGORIES.map((c) => ({ id: c.id, title: c.title, count: c.images.length })),
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                type="button"
+                onClick={() => setFilter(tab.id)}
+                className={`rounded-full px-5 py-2 text-sm font-bold whitespace-nowrap transition-colors ${
+                  filter === tab.id
+                    ? "btn-gold"
+                    : "border border-gold/30 bg-card/60 text-foreground/80 hover:bg-primary/10"
+                }`}
+              >
+                {tab.title} <span className="opacity-70">({tab.count})</span>
+              </button>
+            ))}
           </div>
-        )}
-        {active !== null && (
-          <div
-            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4"
-            onClick={() => setActive(null)}
-            role="dialog"
-            aria-modal="true"
-          >
-            <img
-              src={WORK_IMAGES[active]}
-              alt={`من أعمال قمة بلوتو ${active + 1}`}
-              className="max-h-[85vh] max-w-full rounded-xl object-contain shadow-2xl"
-              onClick={(e) => e.stopPropagation()}
-            />
+        </div>
+
+        <div className="mt-10 space-y-16">
+          {current ? (
+            <div>
+              <CategoryHeader
+                cat={current}
+                action={
+                  <a
+                    href={waLink(current.msg)}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="btn-gold inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 font-bold"
+                  >
+                    <WhatsAppIcon className="h-5 w-5" />
+                    استفسر عن هذا القسم
+                  </a>
+                }
+              />
+              <WorkGrid cat={current} onOpen={open} />
+            </div>
+          ) : (
+            WORK_CATEGORIES.map((cat) => (
+              <div key={cat.id}>
+                <CategoryHeader
+                  cat={cat}
+                  action={
+                    cat.images.length > 4 ? (
+                      <button
+                        type="button"
+                        onClick={() => selectFilter(cat.id)}
+                        className="inline-flex items-center justify-center gap-1 rounded-full border border-gold/40 px-6 py-2.5 font-bold text-primary transition-colors hover:bg-primary hover:text-primary-foreground"
+                      >
+                        عرض القسم كاملاً
+                        <ChevronLeft className="h-4 w-4" />
+                      </button>
+                    ) : undefined
+                  }
+                />
+                <WorkGrid cat={cat} limit={4} onOpen={open} />
+              </div>
+            ))
+          )}
+        </div>
+      </div>
+
+      {lightbox && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 p-4"
+          onClick={() => setLightbox(null)}
+          role="dialog"
+          aria-modal="true"
+          aria-label={lightbox.cat.title}
+        >
+          <div className="absolute top-4 right-4 left-4 flex items-center justify-between text-white">
+            <span className="font-display text-lg font-bold">{lightbox.cat.title}</span>
             <button
               type="button"
               aria-label="إغلاق"
-              onClick={() => setActive(null)}
-              className="absolute top-4 left-4 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-2xl text-white hover:bg-white/20"
+              onClick={() => setLightbox(null)}
+              className="flex h-11 w-11 items-center justify-center rounded-full bg-white/10 hover:bg-white/20"
             >
-              ×
+              <X className="h-6 w-6" />
             </button>
-            <button
-              type="button"
-              aria-label="السابق"
-              onClick={(e) => {
-                e.stopPropagation();
-                setActive((a) =>
-                  a === null ? a : (a - 1 + WORK_IMAGES.length) % WORK_IMAGES.length,
-                );
-              }}
-              className="absolute right-3 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-3xl text-white hover:bg-white/20"
-            >
-              ›
-            </button>
-            <button
-              type="button"
-              aria-label="التالي"
-              onClick={(e) => {
-                e.stopPropagation();
-                setActive((a) => (a === null ? a : (a + 1) % WORK_IMAGES.length));
-              }}
-              className="absolute left-3 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-3xl text-white hover:bg-white/20"
-            >
-              ‹
-            </button>
-            <span
-              dir="ltr"
-              className="absolute bottom-4 left-1/2 -translate-x-1/2 text-sm text-white/70"
-            >
-              {active + 1} / {WORK_IMAGES.length}
-            </span>
           </div>
-        )}
-        <div className="reveal mt-10 grid gap-6 sm:grid-cols-2">
-          {WORK_ITEMS.map((item) => (
-            <div key={item} className="card-luxury flex items-center gap-4 p-6">
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-gold/30 bg-primary/10">
-                <Sparkles className="h-5 w-5 text-primary" />
-              </div>
-              <span className="font-bold text-foreground/90">{item}</span>
-            </div>
-          ))}
+          <img
+            src={workSrc(lightbox.cat.images[lightbox.index] ?? 1)}
+            alt={`${lightbox.cat.title} من أعمال قمة بلوتو`}
+            className="max-h-[80vh] max-w-full rounded-xl object-contain shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          />
+          <button
+            type="button"
+            aria-label="السابق"
+            onClick={(e) => {
+              e.stopPropagation();
+              step(-1);
+            }}
+            className="absolute top-1/2 right-3 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20"
+          >
+            <ChevronRight className="h-7 w-7" />
+          </button>
+          <button
+            type="button"
+            aria-label="التالي"
+            onClick={(e) => {
+              e.stopPropagation();
+              step(1);
+            }}
+            className="absolute top-1/2 left-3 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20"
+          >
+            <ChevronLeft className="h-7 w-7" />
+          </button>
+          <div className="absolute right-4 bottom-4 left-4 flex items-center justify-between gap-4">
+            <span dir="ltr" className="text-sm text-white/70">
+              {lightbox.index + 1} / {lightbox.cat.images.length}
+            </span>
+            <a
+              href={waLink(lightbox.cat.msg)}
+              target="_blank"
+              rel="noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className="btn-gold inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold"
+            >
+              <WhatsAppIcon className="h-4 w-4" />
+              استفسر عبر واتساب
+            </a>
+          </div>
         </div>
-      </div>
+      )}
     </section>
   );
 }
