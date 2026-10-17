@@ -6,7 +6,7 @@ import { readdir, readFile, writeFile, mkdir, copyFile } from "node:fs/promises"
 import { join, dirname } from "node:path";
 
 const OUT = "dist/client";
-const BASE = process.env.BASE_PATH || "/summit-pluto-digital-home/";
+const BASE = process.env.BASE_PATH || "/";
 const LOVABLE_ORIGIN = process.env.LOVABLE_ORIGIN || "https://summit-pluto-digital-home.lovable.app";
 
 async function walk(dir) {
